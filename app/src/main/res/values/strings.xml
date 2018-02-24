@@ -2,4 +2,7 @@
     <string name="app_name">TimedMessage</string>
     <string name="new_message">New Message</string>
     <string name="timed_message">Timed Message</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="phone_number_hint">Enter Recipient Number here</string>
+    <string name="text_message_label">Message:</string>
 </resources>
