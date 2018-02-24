@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TimedMessage</string>
+    <string name="new_message">New Message</string>
+    <string name="timed_message">Timed Message</string>
 </resources>
