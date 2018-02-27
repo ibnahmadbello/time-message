@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,5 +36,20 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+
+        switch (menuItem.getItemId()){
+            case R.id.delete_message:
+                //Do nothing for now
+                return true;
+            case R.id.schedule_message:
+                //Do nothing for now
+                return true;
+        }
+
+        return super.onOptionsItemSelected(menuItem);
     }
 }
