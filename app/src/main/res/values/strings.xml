@@ -8,4 +8,6 @@
     <string name="text_message_hint">Type your message here</string>
     <string name="send_now">Send Now</string>
     <string name="send_later">Send Later</string>
+    <string name="delete">Delete</string>
+    <string name="schedule_message">Re-Schedule Message</string>
 </resources>
