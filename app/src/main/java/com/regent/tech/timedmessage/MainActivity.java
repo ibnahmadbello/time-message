@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final  String TAG = MainActivity.class.getSimpleName();
+
     private FloatingActionButton actionButton;
 
     @Override
