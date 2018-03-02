@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 public class NewMessageActivity extends AppCompatActivity {
 
+    private static final String TAG = NewMessageActivity.class.getSimpleName();
+
     private EditText mPhoneNumber;
     private EditText mTextMessage;
     private Button mSendNow;
