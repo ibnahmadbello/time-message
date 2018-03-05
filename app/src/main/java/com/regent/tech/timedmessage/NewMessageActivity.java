@@ -27,10 +27,17 @@ public class NewMessageActivity extends AppCompatActivity {
         mSendNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNow();
+                sendNow();//TODO
             }
         });
+
         mSendLater = (Button) findViewById(R.id.send_later);
+        mSendLater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 }
