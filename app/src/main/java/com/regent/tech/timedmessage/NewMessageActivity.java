@@ -35,9 +35,18 @@ public class NewMessageActivity extends AppCompatActivity {
         mSendLater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                sendLater();
             }
         });
 
     }
+
+    private void sendNow(){
+
+    }
+
+    private void sendLater(){
+
+    }
+
 }
