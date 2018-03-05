@@ -41,6 +41,10 @@ public class NewMessageActivity extends AppCompatActivity {
 
     }
 
+    private String getPhoneNumber(){
+        return mPhoneNumber.getText().toString();
+    }
+
     private void sendNow(){
 
     }
