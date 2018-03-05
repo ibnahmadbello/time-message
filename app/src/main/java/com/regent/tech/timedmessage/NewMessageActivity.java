@@ -1,10 +1,13 @@
 package com.regent.tech.timedmessage;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class NewMessageActivity extends AppCompatActivity {
 
@@ -46,7 +49,15 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     private void sendNow(){
-
+        try {
+            Uri uri = Uri.parse("SMS to"+getPhoneNumber());
+            Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
+            smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
+            startActivity(smsIntent);
+        } catch (Exception e){
+            Toast.makeText(this, "SMS failed, please try again later", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     private void sendLater(){
