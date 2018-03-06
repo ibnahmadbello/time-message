@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_margin="@dimen/entire_margin"
+    android:orientation="vertical"
     tools:context="com.regent.tech.timedmessage.NewMessageActivity">
 
     <LinearLayout
@@ -15,16 +15,22 @@
         <TextView
             android:id="@+id/phone_label"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/phone_number"/>
         <EditText
             android:id="@+id/phone_number"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:hint="@string/phone_number_hint"/>
+            android:layout_weight="2"
+            android:hint="@string/phone_number_hint"
+            android:inputType="phone"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     </LinearLayout>
 
@@ -35,17 +41,17 @@
         <TextView
             android:id="@+id/message"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/text_message_label" />
 
         <EditText
             android:id="@+id/text_message"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:inputType="text|textMultiLine"
+            android:layout_weight="2"
             android:hint="@string/text_message_hint"
+            android:inputType="text|textMultiLine"
             android:minLines="5" />
     </LinearLayout>
 
@@ -56,22 +62,22 @@
         <Button
             android:id="@+id/send_now"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/send_now"/>
 
         <LinearLayout
             android:id="@+id/empty_space"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="horizontal"/>
 
         <Button
             android:id="@+id/send_later"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/send_later"/>
     </LinearLayout>
 
