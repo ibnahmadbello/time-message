@@ -1,6 +1,7 @@
 package com.regent.tech.timedmessage;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -83,6 +84,28 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){}
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (data != null){
+            Uri uri = data.getData();
+
+            if (uri != null){
+                Cursor c = null;
+                try {
+                    c = getContentResolver().query(uri, new String[]
+                            {ContactsContract.CommonDataKinds.Phone.NUMBER,
+                            ContactsContract.CommonDataKinds.Phone.TYPE}, null, null, null);
+
+                    if (c != null && c.moveToFirst()){
+                        String number = c.getString(0);
+                        mPhoneNumber.setText(number);
+                    }
+                } finally {
+                    if (c != null){
+                        c.close();
+                    }
+                }
+            }
+        }
+    }
 
 }
