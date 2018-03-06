@@ -17,6 +17,7 @@ public class NewMessageActivity extends AppCompatActivity {
     private EditText mTextMessage;
     private Button mSendNow;
     private Button mSendLater;
+    private Button mSearchContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class NewMessageActivity extends AppCompatActivity {
                 sendLater();
             }
         });
+
+        mSearchContact = (Button) findViewById(R.id.search_contacts_button);
 
     }
 
