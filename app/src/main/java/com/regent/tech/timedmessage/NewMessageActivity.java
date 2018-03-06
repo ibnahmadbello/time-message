@@ -48,7 +48,9 @@ public class NewMessageActivity extends AppCompatActivity {
         mSearchContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Using .ACTION_PICK might give a different option
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                //Using CONTENT_TYPE might give a different option also
                 intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
                 startActivityForResult(intent, 1);
             }
@@ -79,5 +81,8 @@ public class NewMessageActivity extends AppCompatActivity {
     private void sendLater(){
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){}
 
 }
