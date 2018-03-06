@@ -2,6 +2,7 @@ package com.regent.tech.timedmessage;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -44,6 +45,14 @@ public class NewMessageActivity extends AppCompatActivity {
         });
 
         mSearchContact = (Button) findViewById(R.id.search_contacts_button);
+        mSearchContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                startActivityForResult(intent, 1);
+            }
+        });
 
     }
 
