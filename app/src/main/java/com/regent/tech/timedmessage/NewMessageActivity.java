@@ -53,6 +53,9 @@ public class NewMessageActivity extends AppCompatActivity {
             Uri uri = Uri.parse("SMS to"+getPhoneNumber());
             Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
             smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
+            if (mPhoneNumber.length() == 0){
+                Toast.makeText(this, "Please Insert a phone number", Toast.LENGTH_SHORT).show();
+            }
             startActivity(smsIntent);
         } catch (Exception e){
             Toast.makeText(this, "SMS failed, please try again later", Toast.LENGTH_LONG).show();
