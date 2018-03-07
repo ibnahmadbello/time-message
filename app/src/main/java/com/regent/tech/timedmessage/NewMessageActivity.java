@@ -97,6 +97,7 @@ public class NewMessageActivity extends AppCompatActivity {
 
                     if (c != null && c.moveToFirst()){
                         String number = c.getString(0);
+                        //int type = c.getString(1); Shows the type of number: mobile(2), home(1)
                         mPhoneNumber.setText(number);
                     }
                 } finally {
