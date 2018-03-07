@@ -70,9 +70,8 @@ public class NewMessageActivity extends AppCompatActivity {
             smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
             if (mPhoneNumber.length() == 0){
                 Toast.makeText(this, "Please Insert a phone number", Toast.LENGTH_SHORT).show();
-            } else {
-            startActivity(smsIntent);
             }
+            startActivity(smsIntent);
         } catch (Exception e){
             Toast.makeText(this, "SMS failed, please try again later", Toast.LENGTH_LONG).show();
             e.printStackTrace();
