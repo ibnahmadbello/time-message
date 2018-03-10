@@ -30,6 +30,7 @@ public class NewMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_message);
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
+        phoneNumber = mPhoneNumber.getText().toString();
         mTextMessage = (EditText) findViewById(R.id.text_message);
         textMessage = mTextMessage.getText().toString();
 
@@ -38,6 +39,7 @@ public class NewMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendNow();//TODO
+                finish();
             }
         });
 
@@ -63,35 +65,10 @@ public class NewMessageActivity extends AppCompatActivity {
 
     }
 
-    private String getPhoneNumber(){
-        phoneNumber = mPhoneNumber.getText().toString();
-        return phoneNumber;
-    }
-
 
     private void sendNow(){
-//        Uri uri = Uri.parse("smsto:"+phoneNumber);
-//        Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
-//        smsIntent.setType("vnd.android-dir/mms-sms");
-//        smsIntent.putExtra("sms_body", textMessage);
-        try {
-//            Uri uri = Uri.parse("smsto:"+getPhoneNumber());
-//            Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
-//            smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
-//            smsIntent.setType("vnd.android-dir/mms-sms");
-//            startActivity(smsIntent);
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, textMessage, null, null);
-//            smsManager.divideStuff(message to divide);
-//            Log.v(TAG, "Message sent");
-//                Toast.makeText(this, "SMS sent", Toast.LENGTH_SHORT).show();
-//            startActivity(smsIntent);
-            finish();
-//            Log.i(TAG, "finished sending SMS");
-        } catch (Exception e){
-            Toast.makeText(this, "SMS failed, please try again later", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phoneNumber, null, textMessage, null, null);
     }
 
     private void sendLater(){
