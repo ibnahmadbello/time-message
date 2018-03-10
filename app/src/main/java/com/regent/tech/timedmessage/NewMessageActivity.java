@@ -63,13 +63,15 @@ public class NewMessageActivity extends AppCompatActivity {
         return mPhoneNumber.getText().toString();
     }
 
+
     private void sendNow(){
         try {
             Uri uri = Uri.parse("SMS to"+getPhoneNumber());
             Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
             smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
-            if (mPhoneNumber.length() == 0){
-                Toast.makeText(this, "Please Insert a phone number", Toast.LENGTH_SHORT).show();
+            smsIntent.setType("vnd.android-dir/mms-sms");
+            if (mPhoneNumber.length() == 0 || mTextMessage.length() == 0){
+                Toast.makeText(this, "Please Complete the required field.", Toast.LENGTH_SHORT).show();
             }
             startActivity(smsIntent);
         } catch (Exception e){
