@@ -7,6 +7,7 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -69,15 +70,23 @@ public class NewMessageActivity extends AppCompatActivity {
 
 
     private void sendNow(){
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+        smsIntent.setData(Uri.parse("smsto:" + phoneNumber));
+        smsIntent.setType("vnd.android-dir/mms-sms");
+        smsIntent.putExtra("sms_body", textMessage);
         try {
-//            Uri uri = Uri.parse("SMS to"+getPhoneNumber());
+//            Uri uri = Uri.parse("smsto:"+getPhoneNumber());
 //            Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
 //            smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
 //            smsIntent.setType("vnd.android-dir/mms-sms");
 //            startActivity(smsIntent);
-                SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(phoneNumber, null, textMessage, null, null);
-                Toast.makeText(this, "SMS sent", Toast.LENGTH_SHORT).show();
+//                SmsManager smsManager = SmsManager.getDefault();
+//                smsManager.sendTextMessage(phoneNumber, null, textMessage, null, null);
+//            Log.v(TAG, "Message sent");
+//                Toast.makeText(this, "SMS sent", Toast.LENGTH_SHORT).show();
+            startActivity(smsIntent);
+            finish();
+            Log.i(TAG, "finished sending SMS");
         } catch (Exception e){
             Toast.makeText(this, "SMS failed, please try again later", Toast.LENGTH_LONG).show();
             e.printStackTrace();
