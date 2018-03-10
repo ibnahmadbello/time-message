@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +15,8 @@ import android.widget.Toast;
 public class NewMessageActivity extends AppCompatActivity {
 
     private static final String TAG = NewMessageActivity.class.getSimpleName();
-
+    String phoneNumber;
+    String textMessage;
     private EditText mPhoneNumber;
     private EditText mTextMessage;
     private Button mSendNow;
@@ -28,6 +30,7 @@ public class NewMessageActivity extends AppCompatActivity {
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
         mTextMessage = (EditText) findViewById(R.id.text_message);
+        textMessage = mTextMessage.getText().toString();
 
         mSendNow = (Button) findViewById(R.id.send_now);
         mSendNow.setOnClickListener(new View.OnClickListener() {
@@ -60,20 +63,21 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     private String getPhoneNumber(){
-        return mPhoneNumber.getText().toString();
+        phoneNumber = mPhoneNumber.getText().toString();
+        return phoneNumber;
     }
 
 
     private void sendNow(){
         try {
-            Uri uri = Uri.parse("SMS to"+getPhoneNumber());
-            Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
-            smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
-            smsIntent.setType("vnd.android-dir/mms-sms");
-            if (mPhoneNumber.length() == 0 || mTextMessage.length() == 0){
-                Toast.makeText(this, "Please Complete the required field.", Toast.LENGTH_SHORT).show();
-            }
-            startActivity(smsIntent);
+//            Uri uri = Uri.parse("SMS to"+getPhoneNumber());
+//            Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
+//            smsIntent.putExtra("SMS body", mTextMessage.getText().toString());
+//            smsIntent.setType("vnd.android-dir/mms-sms");
+//            startActivity(smsIntent);
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNumber, null, textMessage, null, null);
+                Toast.makeText(this, "SMS sent", Toast.LENGTH_SHORT).show();
         } catch (Exception e){
             Toast.makeText(this, "SMS failed, please try again later", Toast.LENGTH_LONG).show();
             e.printStackTrace();
