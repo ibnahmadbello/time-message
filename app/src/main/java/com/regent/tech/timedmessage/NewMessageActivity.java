@@ -1,5 +1,6 @@
 package com.regent.tech.timedmessage;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,6 +19,8 @@ public class NewMessageActivity extends AppCompatActivity {
     private static final String TAG = NewMessageActivity.class.getSimpleName();
     String phoneNumber;
     String textMessage;
+    PendingIntent pSent;
+    PendingIntent pDelivered;
     private EditText mPhoneNumber;
     private EditText mTextMessage;
     private Button mSendNow;
@@ -34,11 +37,14 @@ public class NewMessageActivity extends AppCompatActivity {
         mTextMessage = (EditText) findViewById(R.id.text_message);
         textMessage = mTextMessage.getText().toString();
 
+        pSent = PendingIntent.getBroadcast(this, 0, new Intent("SMS Sent!"), 0);
+        pDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS Delivered"), 0);
+
         mSendNow = (Button) findViewById(R.id.send_now);
         mSendNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNow();//TODO
+                sendNow(phoneNumber, textMessage);//TODO
                 finish();
             }
         });
@@ -66,9 +72,11 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
 
-    private void sendNow(){
+    private void sendNow(String phoneNumber, String textMessage){
+        Log.d(TAG, "Trying to send message!");
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, textMessage, null, null);
+        smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
+        Log.i(TAG, "message sent");
     }
 
     private void sendLater(){
