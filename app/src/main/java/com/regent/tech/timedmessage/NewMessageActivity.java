@@ -76,6 +76,7 @@ public class NewMessageActivity extends AppCompatActivity {
         Log.d(TAG, "Trying to send message!");
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
+
         Log.i(TAG, "message sent");
     }
 
