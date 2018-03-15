@@ -33,9 +33,7 @@ public class NewMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_message);
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
-        phoneNumber = mPhoneNumber.getText().toString();
         mTextMessage = (EditText) findViewById(R.id.text_message);
-        textMessage = mTextMessage.getText().toString();
 
         pSent = PendingIntent.getBroadcast(this, 0, new Intent("SMS Sent!"), 0);
         pDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS Delivered"), 0);
@@ -44,7 +42,7 @@ public class NewMessageActivity extends AppCompatActivity {
         mSendNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNow(phoneNumber, textMessage);//TODO
+                sendNow();//TODO
                 finish();
             }
         });
@@ -72,8 +70,10 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
 
-    private void sendNow(String phoneNumber, String textMessage){
+    private void sendNow(){
         Log.d(TAG, "Trying to send message!");
+        phoneNumber = mPhoneNumber.getText().toString();
+        textMessage = mTextMessage.getText().toString();
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
 
