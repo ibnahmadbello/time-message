@@ -163,4 +163,11 @@ public class NewMessageActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        unregisterReceiver(smsSentReceiver);
+        unregisterReceiver(smsDeliveredReceiver);
+    }
+
 }
