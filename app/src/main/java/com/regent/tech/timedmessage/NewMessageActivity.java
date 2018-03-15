@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -156,6 +157,10 @@ public class NewMessageActivity extends AppCompatActivity {
                 }
             }
         };
+
+        registerReceiver(smsSentReceiver, new IntentFilter("SMS SENT"));
+        registerReceiver(smsDeliveredReceiver, new IntentFilter("SMS DELIVERED"));
+
     }
 
 }
