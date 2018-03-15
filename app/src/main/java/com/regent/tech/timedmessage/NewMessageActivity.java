@@ -1,7 +1,9 @@
 package com.regent.tech.timedmessage;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,9 +38,6 @@ public class NewMessageActivity extends AppCompatActivity {
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
         mTextMessage = (EditText) findViewById(R.id.text_message);
-
-        pSent = PendingIntent.getBroadcast(this, 0, new Intent("SMS Sent!"), 0);
-        pDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS Delivered"), 0);
 
         mSendNow = (Button) findViewById(R.id.send_now);
         mSendNow.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +75,8 @@ public class NewMessageActivity extends AppCompatActivity {
         Log.d(TAG, "Trying to send message!");
         phoneNumber = mPhoneNumber.getText().toString();
         textMessage = mTextMessage.getText().toString();
+        pSent = PendingIntent.getBroadcast(this, 0, new Intent("SMS Sent!"), 0);
+        pDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS Delivered"), 0);
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
 
@@ -111,6 +112,36 @@ public class NewMessageActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        smsSentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()){
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(), "SMS has been sent", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(getBaseContext(), "SMS has been canceled", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(getBaseContext(), "Generic Failure", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(getBaseContext(), "No service", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(getBaseContext(), "Null PDU", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(getBaseContext(), "Radio Off", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
     }
 
 }
