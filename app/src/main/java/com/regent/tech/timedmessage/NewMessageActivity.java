@@ -1,6 +1,7 @@
 package com.regent.tech.timedmessage;
 
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -21,6 +22,7 @@ public class NewMessageActivity extends AppCompatActivity {
     String textMessage;
     PendingIntent pSent;
     PendingIntent pDelivered;
+    BroadcastReceiver smsSentReceiver, smsDeliveredReceiver;
     private EditText mPhoneNumber;
     private EditText mTextMessage;
     private Button mSendNow;
