@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class NewMessageActivity extends AppCompatActivity {
 
     private static final String TAG = NewMessageActivity.class.getSimpleName();
@@ -74,14 +76,20 @@ public class NewMessageActivity extends AppCompatActivity {
 
     private void sendNow(){
         Log.d(TAG, "Trying to send message!");
+        SmsManager smsManager = SmsManager.getDefault();
         phoneNumber = mPhoneNumber.getText().toString();
         textMessage = mTextMessage.getText().toString();
         pSent = PendingIntent.getBroadcast(this, 0, new Intent("SMS Sent!"), 0);
         pDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS Delivered"), 0);
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
-
+        if (textMessage.length() > 160){
+            ArrayList<String> messageParts = smsManager.divideMessage(textMessage);
+            smsManager.sendMultipartTextMessage(phoneNumber, null, messageParts, null, null);
+            Toast.makeText(getBaseContext(), "Sent", Toast.LENGTH_SHORT).show();
+        } else {
+            smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
+            Toast.makeText(getBaseContext(), "Sent", Toast.LENGTH_SHORT).show();
         Log.i(TAG, "message sent");
+        }
     }
 
     private void sendLater(){
