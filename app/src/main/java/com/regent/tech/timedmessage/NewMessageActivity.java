@@ -83,7 +83,10 @@ public class NewMessageActivity extends AppCompatActivity {
         pDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS Delivered"), 0);
         if (textMessage.length() > 160){
             ArrayList<String> messageParts = smsManager.divideMessage(textMessage);
-            smsManager.sendMultipartTextMessage(phoneNumber, null, messageParts, null, null);
+            int partsCount = messageParts.size();
+            ArrayList<PendingIntent> sentPendings = new ArrayList<PendingIntent>(partsCount);
+            ArrayList<PendingIntent> deliveredPendings = new ArrayList<PendingIntent>(partsCount);
+            smsManager.sendMultipartTextMessage(phoneNumber, null, messageParts, sentPendings, deliveredPendings);
             Toast.makeText(getBaseContext(), "Sent", Toast.LENGTH_SHORT).show();
         } else {
             smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
