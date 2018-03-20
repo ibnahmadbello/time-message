@@ -60,10 +60,10 @@ public class NewMessageActivity extends AppCompatActivity {
         mSearchContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Using .ACTION_PICK might give a different option
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                //Using CONTENT_TYPE might give a different option also
-                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                //Using .ACTION_GET_CONTENT might give a different option
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                //Using CONTENT_ITEM_TYPE might give a different option also
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
                 startActivityForResult(intent, 1);
             }
         });
@@ -199,7 +199,7 @@ public class NewMessageActivity extends AppCompatActivity {
                             ContactsContract.Contacts.DISPLAY_NAME}, null, null, null);
 
                     if (c != null && c.moveToFirst()){
-                        String number = c.getString(1);
+                        String number = c.getString(0);
                         //int type = c.getString(1); Shows the type of number: mobile(2), home(1)
                         mPhoneNumber.setText(number);
                     }
