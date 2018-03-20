@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.regent.tech.timedmessage.MainActivity">
 
+    <android.support.v7.widget.RecyclerView
+        />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
