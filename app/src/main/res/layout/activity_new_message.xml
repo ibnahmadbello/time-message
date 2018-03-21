@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:hint="@string/text_message_hint"
-            android:inputType="text|textMultiLine"
+            android:inputType="text|textMultiLine|textCapSentences"
             android:minLines="5" />
     </LinearLayout>
 

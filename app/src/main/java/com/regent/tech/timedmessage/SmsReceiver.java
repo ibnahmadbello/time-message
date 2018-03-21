@@ -13,10 +13,17 @@ import android.widget.Toast;
 
 public class SmsReceiver extends BroadcastReceiver {
 
+    public static final String TAG = SmsReceiver.class.getSimpleName();
+
+    public SmsReceiver(){}
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle intentExtras = intent.getExtras();
+
+        SmsMessage[] messages = null;
+        String str = "";
 
         if (intentExtras != null) {
             /* Get Messages */
