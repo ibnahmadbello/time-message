@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Message> fetchInboxSms(int type){
         ArrayList<Message> smsInbox = new ArrayList<Message>();
-        Uri uriSms = Uri.parse("content://sms/inbox");
+        Uri uriSms = Uri.parse("content://sms");
         Cursor cursor = this.getContentResolver().query(uriSms, new String[]{"_id", "address",
                 "date", "body", "type", "read"}, "type=" + type, null, "date" + " COLLATE LOCALIZED ASC");
         if (cursor != null){
