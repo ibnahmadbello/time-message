@@ -25,11 +25,6 @@ public class NewMessageActivity extends AppCompatActivity {
     private static final String TAG = NewMessageActivity.class.getSimpleName();
     String phoneNumber;
     String textMessage;
-    PendingIntent pSent;
-    PendingIntent pDelivered;
-    ArrayList<PendingIntent> sentPendings;
-    ArrayList<PendingIntent> deliveredPendings;
-    BroadcastReceiver smsSentReceiver, smsDeliveredReceiver;
     private EditText mPhoneNumber;
     private EditText mTextMessage;
     private Button mSendNow;
@@ -65,10 +60,10 @@ public class NewMessageActivity extends AppCompatActivity {
         mSearchContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Using .ACTION_PICK might give a different option
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                //Using CONTENT_TYPE might give a different option also
-                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                //Using .ACTION_GET_CONTENT might give a different option
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                //Using CONTENT_ITEM_TYPE might give a different option also
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
                 startActivityForResult(intent, 1);
             }
         });
@@ -81,20 +76,109 @@ public class NewMessageActivity extends AppCompatActivity {
         SmsManager smsManager = SmsManager.getDefault();
         phoneNumber = mPhoneNumber.getText().toString();
         textMessage = mTextMessage.getText().toString();
-        pSent = PendingIntent.getBroadcast(this, 0, new Intent("SMS Sent!"), 0);
-        pDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS Delivered"), 0);
         if (textMessage.length() > 160){
             ArrayList<String> messageParts = smsManager.divideMessage(textMessage);
+            Context curContext = this.getApplicationContext();
             int partsCount = messageParts.size();
-            sentPendings = new ArrayList<PendingIntent>(partsCount);
-            deliveredPendings = new ArrayList<PendingIntent>(partsCount);
+            ArrayList<PendingIntent> sentPendings = new ArrayList<PendingIntent>(partsCount);
+            ArrayList<PendingIntent> deliveredPendings = new ArrayList<PendingIntent>(partsCount);
+            for (int i = 0; i < partsCount; i++){
+                PendingIntent sentPending = PendingIntent.getBroadcast(curContext, 0, new Intent("SENT"), 0);
+                curContext.registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        switch (getResultCode()){
+                            case Activity.RESULT_OK:
+                                Toast.makeText(getBaseContext(), "Sent.", Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                                Toast.makeText(getBaseContext(), "Not Sent: Generic failure.",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_NO_SERVICE:
+                                Toast.makeText(getBaseContext(), "Not Sent: No service (possibly, " +
+                                        "no SIM-card).", Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_NULL_PDU:
+                                Toast.makeText(getBaseContext(), "Not Sent: Null PDU.",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_RADIO_OFF:
+                                Toast.makeText(getBaseContext(), "Not Sent: Radio off (possibly, " +
+                                        "Airplane mode is enabled in Settings).", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }, new IntentFilter("SENT"));
+                sentPendings.add(sentPending);
+
+                PendingIntent deliveredPending = PendingIntent.getBroadcast(curContext, 0, new Intent("DELIVERED"), 0);
+                curContext.registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        switch (getResultCode()){
+                            case Activity.RESULT_OK:
+                                Toast.makeText(getBaseContext(), "Delivered.", Toast.LENGTH_SHORT).show();
+                                break;
+                            case Activity.RESULT_CANCELED:
+                                Toast.makeText(getBaseContext(), "Not Delivered: Canceled.",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }, new IntentFilter("DELIVERED"));
+                deliveredPendings.add(deliveredPending);
+            }
             smsManager.sendMultipartTextMessage(phoneNumber, null, messageParts, sentPendings, deliveredPendings);
-            Toast.makeText(getBaseContext(), "Sent", Toast.LENGTH_SHORT).show();
         } else {
-            smsManager.sendTextMessage(phoneNumber, null, textMessage, pSent, pDelivered);
-            Toast.makeText(getBaseContext(), "Sent", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "message sent");
+            Context curContext = this.getApplicationContext();
+            PendingIntent sentPending = PendingIntent.getBroadcast(curContext, 0, new Intent("SENT"), 0);
+            curContext.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch (getResultCode()){
+                        case Activity.RESULT_OK:
+                            Toast.makeText(getBaseContext(), "Sent.", Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                            Toast.makeText(getBaseContext(), "Not Sent: Generic failure.",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_NO_SERVICE:
+                            Toast.makeText(getBaseContext(), "Not Sent: No service (possibly, " +
+                                    "no SIM-card).", Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_NULL_PDU:
+                            Toast.makeText(getBaseContext(), "Not Sent: Null PDU.",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_RADIO_OFF:
+                            Toast.makeText(getBaseContext(), "Not Sent: Radio off (possibly, " +
+                                    "Airplane mode is enabled in Settings).", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }, new IntentFilter("SENT"));
+
+            PendingIntent deliveredPending = PendingIntent.getBroadcast(curContext, 0, new Intent("DELIVERED"), 0);
+            curContext.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch (getResultCode()){
+                        case Activity.RESULT_OK:
+                            Toast.makeText(getBaseContext(), "Delivered.", Toast.LENGTH_SHORT).show();
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            Toast.makeText(getBaseContext(), "Not Delivered: Canceled.",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }, new IntentFilter("DELIVERED"));
+            smsManager.sendTextMessage(phoneNumber, null, textMessage, sentPending, deliveredPending);
         }
+
+
     }
 
     private void sendLater(){
@@ -115,7 +199,7 @@ public class NewMessageActivity extends AppCompatActivity {
                             ContactsContract.Contacts.DISPLAY_NAME}, null, null, null);
 
                     if (c != null && c.moveToFirst()){
-                        String number = c.getString(1);
+                        String number = c.getString(0);
                         //int type = c.getString(1); Shows the type of number: mobile(2), home(1)
                         mPhoneNumber.setText(number);
                     }
@@ -128,59 +212,5 @@ public class NewMessageActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        smsSentReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()){
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS has been sent", Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getBaseContext(), "SMS has been canceled", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(getBaseContext(), "Generic Failure", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(getBaseContext(), "No service", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(getBaseContext(), "Null PDU", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(getBaseContext(), "Radio Off", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        };
-
-        smsDeliveredReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()){
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS Delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getBaseContext(), "SMS Not Delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        };
-
-        registerReceiver(smsSentReceiver, new IntentFilter("SMS SENT"));
-        registerReceiver(smsDeliveredReceiver, new IntentFilter("SMS DELIVERED"));
-
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        unregisterReceiver(smsSentReceiver);
-        unregisterReceiver(smsDeliveredReceiver);
-    }
 
 }
