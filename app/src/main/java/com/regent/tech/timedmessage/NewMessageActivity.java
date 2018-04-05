@@ -40,7 +40,7 @@ public class NewMessageActivity extends AppCompatActivity {
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
         mTextMessage = (EditText) findViewById(R.id.text_message);
-
+        dateDialog = new DateDialog();
 
         mSendNow = (Button) findViewById(R.id.send_now);
         mSendNow.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +56,7 @@ public class NewMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                sendLater();
+                dateDialog.show(getSupportFragmentManager(), TAG);
             }
         });
 
