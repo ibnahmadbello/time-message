@@ -1,6 +1,7 @@
 package com.regent.tech.timedmessage;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -183,7 +183,9 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     private void sendLater(){
-
+        FragmentManager manager = getFragmentManager();
+        DatePickerFragment dialog = new DatePickerFragment();
+        dialog.show(manager, TAG);
     }
 
     @Override
