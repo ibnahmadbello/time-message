@@ -31,6 +31,7 @@ public class NewMessageActivity extends AppCompatActivity {
     private Button mSendNow;
     private Button mSendLater;
     private Button mSearchContact;
+    private DateDialog dateDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class NewMessageActivity extends AppCompatActivity {
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
         mTextMessage = (EditText) findViewById(R.id.text_message);
+
 
         mSendNow = (Button) findViewById(R.id.send_now);
         mSendNow.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +55,7 @@ public class NewMessageActivity extends AppCompatActivity {
         mSendLater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendLater();
+//                sendLater();
             }
         });
 
@@ -182,11 +184,11 @@ public class NewMessageActivity extends AppCompatActivity {
 
     }
 
-    private void sendLater(){
-        FragmentManager manager = getFragmentManager();
-        DatePickerFragment dialog = new DatePickerFragment();
-        dialog.show(manager, TAG);
-    }
+//    private void sendLater(View view){
+//        FragmentManager manager = getFragmentManager();
+//        DatePickerFragment dialog = new DatePickerFragment();
+//        dialog.show(manager, DatePickerFragment.DIALOG_DATE);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
