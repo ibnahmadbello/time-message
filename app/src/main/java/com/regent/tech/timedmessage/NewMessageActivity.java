@@ -274,8 +274,12 @@ public class NewMessageActivity extends AppCompatActivity implements
                 finish();
                 break;
             case R.id.select_date:
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getSupportFragmentManager(), TAG);
                 break;
             case R.id.select_time:
+                TimePickerFragment timePickerFragment = new TimePickerFragment();
+                timePickerFragment.show(getSupportFragmentManager(), TAG);
                 break;
             default:
                 break;
