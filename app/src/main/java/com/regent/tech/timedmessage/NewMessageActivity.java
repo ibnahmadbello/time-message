@@ -16,6 +16,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,8 @@ public class NewMessageActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
 
     private static final String TAG = NewMessageActivity.class.getSimpleName();
+    private long mDueDate = Long.MAX_VALUE;
+
     String phoneNumber;
     String textMessage;
     private EditText mPhoneNumber;
@@ -237,14 +240,20 @@ public class NewMessageActivity extends AppCompatActivity implements
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Date todayDate = new Date();
-        Date setDate = new Date(year, month, dayOfMonth);
-        if (setDate.before(todayDate)){
-            Toast.makeText(this, "Date Already pass!", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            DialogFragment timeFragment = new TimePickerFragment();
-            timeFragment.show(getSupportFragmentManager(), TAG);
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        setDateSelection(calendar.getTimeInMillis());
+//        Date setDate = new Date(year, month, dayOfMonth);
+//        if (setDate.before(todayDate)){
+//            Toast.makeText(this, "Date Already pass!", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else {
+//            DialogFragment timeFragment = new TimePickerFragment();
+//            timeFragment.show(getSupportFragmentManager(), TAG);
+//        }
     }
 
     @Override
@@ -285,4 +294,27 @@ public class NewMessageActivity extends AppCompatActivity implements
                 break;
         }
     }
+
+    // Manage the selected date value
+    public void setDateSelection(long selectedDateStamp){
+        mDueDate = selectedDateStamp;
+        updateDateDisplay();
+    }
+
+    public long getDateSelection(){
+        return mDueDate;
+    }
+
+    private void updateDateDisplay() {
+        if (getDateSelection() == Long.MAX_VALUE){
+            dateTextView.setText(R.string.not_set);
+        } else {
+            CharSequence formatted = DateUtils.getRelativeTimeSpanString(this, mDueDate);
+            dateTextView.setText(formatted);
+        }
+    }
+
+
+
+
 }
