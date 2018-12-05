@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,13 +31,15 @@ import java.util.Date;
 
 
 public class NewMessageActivity extends AppCompatActivity implements
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
 
     private static final String TAG = NewMessageActivity.class.getSimpleName();
     String phoneNumber;
     String textMessage;
     private EditText mPhoneNumber;
     private EditText mTextMessage;
+    private TextView timeTextView, dateTextView;
+    private View mSelectDate, mSelectTime;
     private Button mSendNow;
     private Button mSendLater;
     private Button mSearchContact;
@@ -50,40 +53,20 @@ public class NewMessageActivity extends AppCompatActivity implements
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
         mTextMessage = (EditText) findViewById(R.id.text_message);
+        timeTextView = (TextView) findViewById(R.id.send_time);
+        dateTextView = (TextView) findViewById(R.id.send_date);
+        mSelectDate = findViewById(R.id.select_date);
+        mSelectTime = findViewById(R.id.select_time);
+        mSendNow = (Button) findViewById(R.id.send_now);
+        mSendLater = (Button) findViewById(R.id.send_later);
+        mSearchContact = (Button) findViewById(R.id.search_contacts_button);
         dateDialog = new DateDialog();
 
-        mSendNow = (Button) findViewById(R.id.send_now);
-        mSendNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendNow();//TODO
-                finish();
-            }
-        });
-
-        mSendLater = (Button) findViewById(R.id.send_later);
-        mSendLater.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                DialogFragment dateFragment = new DatePickerFragment();
-//                dateFragment.show(getSupportFragmentManager(), TAG);
-//                showDateTimePicker();
-//                sendLater();
-//                dateDialog.show(getSupportFragmentManager(), TAG);
-            }
-        });
-
-        mSearchContact = (Button) findViewById(R.id.search_contacts_button);
-        mSearchContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Using .ACTION_GET_CONTENT might give a different option
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                //Using CONTENT_ITEM_TYPE might give a different option also
-                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                startActivityForResult(intent, 1);
-            }
-        });
+        mSelectDate.setOnClickListener(this);
+        mSelectTime.setOnClickListener(this);
+        mSendNow.setOnClickListener(this);
+        mSendLater.setOnClickListener(this);
+        mSearchContact.setOnClickListener(this);
 
     }
 
@@ -267,5 +250,35 @@ public class NewMessageActivity extends AppCompatActivity implements
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.search_contacts_button:
+                //Using .ACTION_GET_CONTENT might give a different option
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                //Using CONTENT_ITEM_TYPE might give a different option also
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.send_later:
+//                DialogFragment dateFragment = new DatePickerFragment();
+//                dateFragment.show(getSupportFragmentManager(), TAG);
+//                showDateTimePicker();
+//                sendLater();
+//                dateDialog.show(getSupportFragmentManager(), TAG);
+                break;
+            case R.id.send_now:
+                sendNow();//TODO
+                finish();
+                break;
+            case R.id.select_date:
+                break;
+            case R.id.select_time:
+                break;
+            default:
+                break;
+        }
     }
 }
