@@ -1,8 +1,10 @@
 package com.regent.tech.timedmessage;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,18 +12,25 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-public class NewMessageActivity extends AppCompatActivity {
+
+public class NewMessageActivity extends AppCompatActivity implements
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final String TAG = NewMessageActivity.class.getSimpleName();
     String phoneNumber;
@@ -32,6 +41,7 @@ public class NewMessageActivity extends AppCompatActivity {
     private Button mSendLater;
     private Button mSearchContact;
     private DateDialog dateDialog;
+    Calendar date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +65,11 @@ public class NewMessageActivity extends AppCompatActivity {
         mSendLater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DialogFragment dateFragment = new DatePickerFragment();
+                dateFragment.show(getSupportFragmentManager(), TAG);
+//                showDateTimePicker();
 //                sendLater();
-                dateDialog.show(getSupportFragmentManager(), TAG);
+//                dateDialog.show(getSupportFragmentManager(), TAG);
             }
         });
 
@@ -72,6 +85,25 @@ public class NewMessageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void showDateTimePicker(){
+        final Calendar currentDate = Calendar.getInstance();
+        date = Calendar.getInstance();
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                date.set(year, month, dayOfMonth);
+                new TimePickerDialog(NewMessageActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        date.set(Calendar.MINUTE, minute);
+                        Log.i(TAG, "THe chosen one " + date.getTime());
+                    }
+                }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
+            }
+        }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
 
@@ -219,5 +251,21 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Date todayDate = new Date();
+        Date setDate = new Date(year, month, dayOfMonth);
+        if (setDate.before(todayDate)){
+            Toast.makeText(this, "Date Already pass!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            DialogFragment timeFragment = new TimePickerFragment();
+            timeFragment.show(getSupportFragmentManager(), TAG);
+        }
+    }
 
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+    }
 }
