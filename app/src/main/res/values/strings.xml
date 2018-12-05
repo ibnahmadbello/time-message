@@ -12,4 +12,6 @@
     <string name="schedule_message">Re-Schedule Message</string>
     <string name="search">Search Contacts</string>
     <string name="schedule_date">Schedule Date:</string>
+    <string name="show_scheduled_message">Show Scheduled Message</string>
+    <string name="date_time_not_set">Date/Time to send Message: Not Set</string>
 </resources>

@@ -65,8 +65,8 @@ public class NewMessageActivity extends AppCompatActivity implements
         mSendLater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment dateFragment = new DatePickerFragment();
-                dateFragment.show(getSupportFragmentManager(), TAG);
+//                DialogFragment dateFragment = new DatePickerFragment();
+//                dateFragment.show(getSupportFragmentManager(), TAG);
 //                showDateTimePicker();
 //                sendLater();
 //                dateDialog.show(getSupportFragmentManager(), TAG);
