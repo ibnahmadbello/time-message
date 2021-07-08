@@ -11,4 +11,9 @@
     <string name="delete">Delete</string>
     <string name="schedule_message">Re-Schedule Message</string>
     <string name="search">Search Contacts</string>
+    <string name="schedule_date">Schedule Date:</string>
+    <string name="show_scheduled_message">Show Scheduled Message</string>
+    <string name="due_date">Due Date:</string>
+    <string name="due_time">Due Time:</string>
+    <string name="not_set">Not Set</string>
 </resources>
